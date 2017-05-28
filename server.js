@@ -24,6 +24,16 @@ function createResults(image) {
     source: image.parentPage,
   }
 }
+
+app.get('/api/search/:query',function(req,res){
+	var query=req.params.query,
+		offset = req.query.offset || 1,
+		date = Date.now();
+		client.search(query,{page:offset}).then(images=>{
+			res.status(200).json(images.map(createResults));
+		});
+});
+
 app.post('/search',function(req,res){
 	var search=req.body.search;
 	var page=req.body.page || 10;
@@ -34,6 +44,11 @@ app.post('/search',function(req,res){
 		res.status(200).json(images.map(createResults));
 	});
 });
+
+app.get('/api/latest/',function(req,res){
+	console.log("still to be tested");
+});
+
 app.get('/',function(req,res,next){
 	res.render("index");
 });
