@@ -10,8 +10,8 @@ var client =new googleimages(process.env.CSE_ID,process.env.CSE_API_KEY);
 
 var port = process.env.PORT || 3000;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: false }));
 
 app.set('views', path.join(__dirname, '/views'));
 app.engine('ejs', engine);
@@ -27,6 +27,8 @@ function createResults(image) {
 app.post('/search',function(req,res){
 	var search=req.body.search;
 	var page=req.body.page || 10;
+	var date= Date.now();
+	console.log(date);
 	client.search( 'Steve Angello',{page:page})
 	.then(images=>{
 		res.status(200).json(images.map(createResults));
